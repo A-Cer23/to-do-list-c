@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_TASKS 10
+#define MAX_TITLE_LENGTH 50
+
 
 struct Task {
     char title[50];
@@ -9,29 +12,26 @@ struct Task {
 
 
 void mainMenu();
-void addTask(struct Task tasks[], int *totalTasks, int MAX_TASKS, int MAX_TITLE_LENGTH);
+void addTask(struct Task tasks[], int *totalTasks);
 void deleteTask(struct Task tasks[], int *totalTasks);
 void printAllTasks(struct Task tasks[], int totalTasks);
 
 
 int main() {
 
-    int MAX_TASKS = 10;
-    int MAX_TITLE_LENGTH = 50;
-
     struct Task tasks[MAX_TASKS];
     int totalTasks = 0;
-    
+
     char choice;
 
     do {
         mainMenu();
 
-        scanf("%c", &choice);
+        scanf(" %c", &choice);
 
         switch (choice) {
             case '1':
-                addTask(tasks, &totalTasks, MAX_TASKS, MAX_TITLE_LENGTH);
+                addTask(tasks, &totalTasks);
                 break;
             case '2':
                 deleteTask(tasks, &totalTasks);
@@ -64,7 +64,7 @@ void mainMenu() {
 }
 
 
-void addTask(struct Task tasks[], int *totalTasks, int MAX_TASKS, int MAX_TITLE_LENGTH) {
+void addTask(struct Task tasks[], int *totalTasks) {
     
     if (*totalTasks >= MAX_TASKS) {
         printf("Task list is full. Can't add more tasks.\n");
@@ -73,7 +73,7 @@ void addTask(struct Task tasks[], int *totalTasks, int MAX_TASKS, int MAX_TITLE_
     
     char title[MAX_TITLE_LENGTH];
     printf("\nEnter Title: ");
-    scanf(" %s", &title);
+    scanf(" %s", title);
     
     strcpy(tasks[*totalTasks].title, title);
     (*totalTasks)++;
@@ -85,7 +85,7 @@ void deleteTask(struct Task tasks[], int *totalTasks) {
     
     int taskId;
     printf("Enter the task id to remove (0-%d): ", *totalTasks - 1);
-    scanf("%d", &taskId);
+    scanf(" %d", &taskId);
 
     if (taskId < 0 || taskId >= *totalTasks) {
         printf("Invalid task id.\n");
